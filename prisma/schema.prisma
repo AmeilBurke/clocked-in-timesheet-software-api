@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Trade {
+  trade_id   Int       @id @default(autoincrement())
+  trade_name String    @unique
+  Account    Account[]
+}
+
+model Role {
+  role_id   Int       @id @default(autoincrement())
+  role_name String    @unique
+  Account   Account[]
+}
+
+model Account {
+  account_id                   Int            @id @default(autoincrement())
+  account_email                String         @unique
+  account_password             String
+  account_name                 String
+  establishment_id             Establishment? @relation(fields: [account_establishment_id], references: [establishment_id])
+  account_establishment_id     Int?
+  role_id                      Role           @relation(fields: [account_role_id], references: [role_id])
+  account_role_id              Int
+  trade_id                     Trade?         @relation(fields: [account_trade_id], references: [trade_id])
+  account_trade_id             Int?
+  account_hourly_rate          Int?
+  account_hourly_overtime_rate Int?
+  Timesheet                    Timesheet[]
+}
+
+model Establishment {
+  establishment_id   Int       @id @default(autoincrement())
+  establishment_name String
+  Account            Account[]
+  Job                Job[]
+}
+
+model Timesheet {
+  timesheet_id         Int      @id @default(autoincrement())
+  timesheet_name       String
+  account_id           Account  @relation(fields: [timesheet_account_id], references: [account_id])
+  timesheet_account_id Int
+  timesheet_start_date DateTime
+  timesheet_end_date   DateTime
+  Job                  Job[]
+}
+
+model Job {
+  job_id                    Int           @id @default(autoincrement())
+  job_display_name          String
+  establishment_id          Establishment @relation(fields: [job_location], references: [establishment_id], onDelete: NoAction, onUpdate: NoAction)
+  job_location              Int
+  job_start_time            DateTime
+  job_end_time              DateTime
+  job_notes                 String?
+  job_standard_hours_worked Int?
+  job_overtime_hours_worked Int?
+  timesheet_id              Timesheet?    @relation(fields: [job_timesheet_id], references: [timesheet_id], onDelete: NoAction, onUpdate: NoAction)
+  job_timesheet_id          Int?
+}
