@@ -9,33 +9,42 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TradesService = void 0;
-const client_1 = require("@prisma/client");
+exports.EstablishmentsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
-let TradesService = class TradesService {
+const client_1 = require("@prisma/client");
+let EstablishmentsService = class EstablishmentsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async create(createTradeDto) {
+    async create(createEstablishmentDto) {
         try {
-            return await this.prisma.trade.create({
+            return await this.prisma.establishment.create({
                 data: {
-                    trade_name: createTradeDto.tradeName.trim().toLocaleLowerCase(),
+                    establishment_name: createEstablishmentDto.establishmentName
+                        .trim()
+                        .toLocaleLowerCase(),
                 },
             });
         }
         catch (error) {
-            return `there was an unknown error: ${error}.`;
+            if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+                if (error.code === 'P2002') {
+                    return 'a establishment already exists with this name.';
+                }
+            }
+            else {
+                return `there was an unknown error: ${error}.`;
+            }
         }
     }
     async findAll() {
-        return await this.prisma.trade.findMany();
+        return await this.prisma.establishment.findMany();
     }
     async findOne(id) {
         try {
-            return await this.prisma.trade.findUniqueOrThrow({
-                where: { trade_id: id },
+            return await this.prisma.establishment.findUniqueOrThrow({
+                where: { establishment_id: id },
             });
         }
         catch (error) {
@@ -44,33 +53,25 @@ let TradesService = class TradesService {
             }
         }
     }
-    async update(id, updateTradeDto) {
+    async update(id, updateEstablishmentDto) {
         try {
-            return await this.prisma.trade.update({
-                where: { trade_id: id },
+            return this.prisma.establishment.update({
+                where: { establishment_id: id },
                 data: {
-                    trade_name: updateTradeDto.tradeName?.trim().toLocaleLowerCase(),
+                    establishment_name: updateEstablishmentDto.establishmentName
+                        ?.trim()
+                        .toLocaleLowerCase(),
                 },
             });
         }
         catch (error) {
-            if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
-                if (error.code === 'P2002') {
-                    return 'you cannot have 2 or more trades with the same name.';
-                }
-                else {
-                    return error;
-                }
-            }
-            else {
-                return `there was an unknown error: ${error}.`;
-            }
+            return `there was an unknown error: ${error}.`;
         }
     }
     async remove(id) {
         try {
-            return await this.prisma.trade.delete({
-                where: { trade_id: id },
+            return await this.prisma.establishment.delete({
+                where: { establishment_id: id },
             });
         }
         catch (error) {
@@ -88,9 +89,9 @@ let TradesService = class TradesService {
         }
     }
 };
-exports.TradesService = TradesService;
-exports.TradesService = TradesService = __decorate([
+exports.EstablishmentsService = EstablishmentsService;
+exports.EstablishmentsService = EstablishmentsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], TradesService);
-//# sourceMappingURL=trades.service.js.map
+], EstablishmentsService);
+//# sourceMappingURL=establishments.service.js.map

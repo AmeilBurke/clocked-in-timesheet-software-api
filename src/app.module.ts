@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { TradesModule } from './trades/trades.module';
 import { RolesModule } from './roles/roles.module';
 import { EstablishmentsModule } from './establishments/establishments.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
-  imports: [TradesModule, RolesModule, EstablishmentsModule],
+  imports: [TradesModule, RolesModule, EstablishmentsModule, AccountsModule],
   controllers: [AppController],
   providers: [AppService],
 })

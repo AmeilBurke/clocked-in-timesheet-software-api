@@ -17,9 +17,9 @@ export declare class TradesService {
         trade_id: number;
         trade_name: string;
     }>;
-    update(id: number, updateTradeDto: UpdateTradeDto): Promise<{
+    update(id: number, updateTradeDto: UpdateTradeDto): Promise<string | {
         trade_id: number;
         trade_name: string;
-    } | Prisma.PrismaClientKnownRequestError | "You cannot have 2 or more trades with the same name" | "unknown error">;
+    } | Prisma.PrismaClientKnownRequestError>;
     remove(id: number): Promise<unknown>;
 }

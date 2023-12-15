@@ -12,12 +12,14 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const trades_module_1 = require("./trades/trades.module");
 const roles_module_1 = require("./roles/roles.module");
+const establishments_module_1 = require("./establishments/establishments.module");
+const accounts_module_1 = require("./accounts/accounts.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [trades_module_1.TradesModule, roles_module_1.RolesModule],
+        imports: [trades_module_1.TradesModule, roles_module_1.RolesModule, establishments_module_1.EstablishmentsModule, accounts_module_1.AccountsModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

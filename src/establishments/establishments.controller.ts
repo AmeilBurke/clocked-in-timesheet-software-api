@@ -11,6 +11,8 @@ import { EstablishmentsService } from './establishments.service';
 import { CreateEstablishmentDto } from './dto/create-establishment.dto';
 import { UpdateEstablishmentDto } from './dto/update-establishment.dto';
 
+// Controller & services need to be done
+
 @Controller('establishments')
 export class EstablishmentsController {
   constructor(private readonly establishmentsService: EstablishmentsService) {}
@@ -27,7 +29,7 @@ export class EstablishmentsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.establishmentsService.findOne(+id);
+    return this.establishmentsService.findOne(Number(id));
   }
 
   @Patch(':id')
@@ -35,11 +37,14 @@ export class EstablishmentsController {
     @Param('id') id: string,
     @Body() updateEstablishmentDto: UpdateEstablishmentDto,
   ) {
-    return this.establishmentsService.update(+id, updateEstablishmentDto);
+    return this.establishmentsService.update(
+      Number(id),
+      updateEstablishmentDto,
+    );
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.establishmentsService.remove(+id);
+    return this.establishmentsService.remove(Number(id));
   }
 }

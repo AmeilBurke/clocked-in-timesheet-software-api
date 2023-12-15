@@ -21,18 +21,18 @@ let RolesService = class RolesService {
         try {
             return await this.prisma.role.create({
                 data: {
-                    role_name: createRoleDto.roleName,
+                    role_name: createRoleDto.roleName.trim().toLocaleLowerCase(),
                 },
             });
         }
         catch (error) {
             if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
                 if (error.code === 'P2002') {
-                    return 'A role already exists with this name.';
+                    return 'a role already exists with this name.';
                 }
             }
             else {
-                return `There was an unknown error: ${error}`;
+                return `there was an unknown error: ${error}.`;
             }
         }
     }
@@ -47,7 +47,7 @@ let RolesService = class RolesService {
         }
         catch (error) {
             if (error.code === 'P2025') {
-                return `No record was found for id: ${id}.`;
+                return `no record was found for id: ${id}.`;
             }
         }
     }
@@ -55,20 +55,20 @@ let RolesService = class RolesService {
         try {
             return await this.prisma.role.update({
                 where: { role_id: id },
-                data: { role_name: updateRoleDto.roleName },
+                data: { role_name: updateRoleDto.roleName?.trim().toLocaleLowerCase() },
             });
         }
         catch (error) {
             if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
                 if (error.code === 'P2002') {
-                    return 'You cannot have 2 or more roles with the same name';
+                    return 'you cannot have 2 or more roles with the same name.';
                 }
                 else {
                     return error;
                 }
             }
             else {
-                return 'unknown error';
+                return 'unknown error.';
             }
         }
     }
@@ -88,7 +88,7 @@ let RolesService = class RolesService {
                 }
             }
             else {
-                return 'unknown error';
+                return 'unknown error.';
             }
         }
     }

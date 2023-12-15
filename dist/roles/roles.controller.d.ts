@@ -19,6 +19,6 @@ export declare class RolesController {
     update(id: string, updateRoleDto: UpdateRoleDto): Promise<{
         role_id: number;
         role_name: string;
-    } | import("@prisma/client/runtime/library").PrismaClientKnownRequestError | "You cannot have 2 or more roles with the same name" | "unknown error">;
+    } | import("@prisma/client/runtime/library").PrismaClientKnownRequestError | "you cannot have 2 or more roles with the same name." | "unknown error.">;
     remove(id: string): Promise<unknown>;
 }

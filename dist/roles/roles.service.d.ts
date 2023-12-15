@@ -20,6 +20,6 @@ export declare class RolesService {
     update(id: number, updateRoleDto: UpdateRoleDto): Promise<{
         role_id: number;
         role_name: string;
-    } | Prisma.PrismaClientKnownRequestError | "You cannot have 2 or more roles with the same name" | "unknown error">;
+    } | Prisma.PrismaClientKnownRequestError | "you cannot have 2 or more roles with the same name." | "unknown error.">;
     remove(id: number): Promise<unknown>;
 }

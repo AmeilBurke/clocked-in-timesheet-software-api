@@ -13,17 +13,11 @@ export class TradesService {
     try {
       return await this.prisma.trade.create({
         data: {
-          trade_name: createTradeDto.tradeName,
+          trade_name: createTradeDto.tradeName.trim().toLocaleLowerCase(),
         },
       });
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          return 'A trade already exists with this name.';
-        }
-      } else {
-        return `There was an unknown error: ${error}`;
-      }
+      return `there was an unknown error: ${error}.`;
     }
   }
 
@@ -38,7 +32,7 @@ export class TradesService {
       });
     } catch (error) {
       if (error.code === 'P2025') {
-        return `No record was found for id: ${id}.`;
+        return `no record was found for id: ${id}.`;
       }
     }
   }
@@ -47,17 +41,19 @@ export class TradesService {
     try {
       return await this.prisma.trade.update({
         where: { trade_id: id },
-        data: { trade_name: updateTradeDto.tradeName },
+        data: {
+          trade_name: updateTradeDto.tradeName?.trim().toLocaleLowerCase(),
+        },
       });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          return 'You cannot have 2 or more trades with the same name';
+          return 'you cannot have 2 or more trades with the same name.';
         } else {
           return error;
         }
       } else {
-        return 'unknown error';
+        return `there was an unknown error: ${error}.`;
       }
     }
   }
@@ -75,7 +71,7 @@ export class TradesService {
           return error;
         }
       } else {
-        return 'unknown error';
+        return 'unknown error.';
       }
     }
   }
