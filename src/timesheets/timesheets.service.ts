@@ -1,18 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { PrismaService } from 'src/prisma.service';
+import { CreateTimesheetDto } from './dto/create-timesheet.dto';
+import { UpdateTimesheetDto } from './dto/update-timesheet.dto';
 import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
-export class RolesService {
+export class TimesheetsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createRoleDto: CreateRoleDto) {
+  async create(createTimesheetDto: CreateTimesheetDto) {
     try {
-      return await this.prisma.role.create({
+      return await this.prisma.timesheet.create({
         data: {
-          role_name: createRoleDto.roleName.trim().toLocaleLowerCase(),
+          timesheet_name: createTimesheetDto.timesheetName,
+          timesheet_start_date: createTimesheetDto.timesheetStartDate,
+          timesheet_account_id: createTimesheetDto.timesheetAccountId,
+          timesheet_end_date: createTimesheetDto.timesheetEndDate,
         },
       });
     } catch (error) {
@@ -25,7 +28,7 @@ export class RolesService {
       }
     }
   }
-  
+
   async findAll() {
     return await this.prisma.role.findMany({
       orderBy: {

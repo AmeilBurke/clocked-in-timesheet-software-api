@@ -37,7 +37,11 @@ let RolesService = class RolesService {
         }
     }
     async findAll() {
-        return await this.prisma.role.findMany();
+        return await this.prisma.role.findMany({
+            orderBy: {
+                role_name: 'asc',
+            },
+        });
     }
     async findOne(id) {
         try {

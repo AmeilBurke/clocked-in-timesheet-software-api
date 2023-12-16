@@ -39,7 +39,9 @@ let EstablishmentsService = class EstablishmentsService {
         }
     }
     async findAll() {
-        return await this.prisma.establishment.findMany();
+        return await this.prisma.establishment.findMany({
+            orderBy: { establishment_name: 'asc' },
+        });
     }
     async findOne(id) {
         try {

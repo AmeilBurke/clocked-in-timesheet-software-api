@@ -61,7 +61,7 @@ model Job {
   establishment_id          Establishment @relation(fields: [job_location], references: [establishment_id], onDelete: NoAction, onUpdate: NoAction)
   job_location              Int
   job_start_time            DateTime
-  job_end_time              DateTime
+  job_end_time              DateTime?
   job_notes                 String?
   job_standard_hours_worked Int?
   job_overtime_hours_worked Int?

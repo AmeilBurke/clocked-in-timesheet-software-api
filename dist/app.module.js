@@ -14,12 +14,13 @@ const trades_module_1 = require("./trades/trades.module");
 const roles_module_1 = require("./roles/roles.module");
 const establishments_module_1 = require("./establishments/establishments.module");
 const accounts_module_1 = require("./accounts/accounts.module");
+const jobs_module_1 = require("./jobs/jobs.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [trades_module_1.TradesModule, roles_module_1.RolesModule, establishments_module_1.EstablishmentsModule, accounts_module_1.AccountsModule],
+        imports: [trades_module_1.TradesModule, roles_module_1.RolesModule, establishments_module_1.EstablishmentsModule, accounts_module_1.AccountsModule, jobs_module_1.JobsModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

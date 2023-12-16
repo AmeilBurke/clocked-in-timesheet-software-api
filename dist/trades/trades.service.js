@@ -30,7 +30,9 @@ let TradesService = class TradesService {
         }
     }
     async findAll() {
-        return await this.prisma.trade.findMany();
+        return await this.prisma.trade.findMany({
+            orderBy: { trade_name: 'asc' },
+        });
     }
     async findOne(id) {
         try {
