@@ -6,18 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TradesModule = void 0;
+exports.TimesheetsModule = void 0;
 const common_1 = require("@nestjs/common");
-const trades_service_1 = require("./trades.service");
-const trades_controller_1 = require("./trades.controller");
+const timesheets_service_1 = require("./timesheets.service");
+const timesheets_controller_1 = require("./timesheets.controller");
 const prisma_service_1 = require("../prisma.service");
-let TradesModule = class TradesModule {
+let TimesheetsModule = class TimesheetsModule {
 };
-exports.TradesModule = TradesModule;
-exports.TradesModule = TradesModule = __decorate([
+exports.TimesheetsModule = TimesheetsModule;
+exports.TimesheetsModule = TimesheetsModule = __decorate([
     (0, common_1.Module)({
-        controllers: [trades_controller_1.TradesController],
-        providers: [trades_service_1.TradesService, prisma_service_1.PrismaService,],
+        controllers: [timesheets_controller_1.TimesheetsController],
+        providers: [timesheets_service_1.TimesheetsService, prisma_service_1.PrismaService],
     })
-], TradesModule);
-//# sourceMappingURL=trades.module.js.map
+], TimesheetsModule);
+//# sourceMappingURL=timesheets.module.js.map

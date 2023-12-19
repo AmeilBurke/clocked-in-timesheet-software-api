@@ -7,9 +7,10 @@ import { EstablishmentsModule } from './establishments/establishments.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { JobsModule } from './jobs/jobs.module';
 import { TimesheetsModule } from './timesheets/timesheets.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [TradesModule, RolesModule, EstablishmentsModule, AccountsModule, JobsModule, TimesheetsModule],
+  imports: [TradesModule, RolesModule, EstablishmentsModule, AccountsModule, JobsModule, TimesheetsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
