@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AccountsService } from 'src/accounts/accounts.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -12,17 +13,17 @@ export class AuthService {
   async signIn(email: string, password: string) {
     const account = await this.accountsService.findOne(email);
 
-    // need to change stored password from plain text to bcypt hashed password
     if (typeof account !== 'string') {
-      if (account.account_password !== password) {
+
+      if (await bcrypt.compare(password, account.account_password)) {
+        const payload = {
+          sub: account.account_id,
+          accountEmail: account.account_email,
+        };
+        return { access_token: await this.jwtService.signAsync(payload) };
+      } else {
         throw new UnauthorizedException();
       }
-
-      const payload = {
-        sub: account.account_id,
-        accountEmail: account.account_email,
-      };
-      return { access_token: await this.jwtService.signAsync(payload) };
     } else {
       throw new Error();
     }

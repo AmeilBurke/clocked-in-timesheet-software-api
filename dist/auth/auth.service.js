@@ -13,6 +13,7 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const accounts_service_1 = require("../accounts/accounts.service");
+const bcrypt = require("bcrypt");
 let AuthService = class AuthService {
     constructor(accountsService, jwtService) {
         this.accountsService = accountsService;
@@ -21,14 +22,16 @@ let AuthService = class AuthService {
     async signIn(email, password) {
         const account = await this.accountsService.findOne(email);
         if (typeof account !== 'string') {
-            if (account.account_password !== password) {
+            if (await bcrypt.compare(password, account.account_password)) {
+                const payload = {
+                    sub: account.account_id,
+                    accountEmail: account.account_email,
+                };
+                return { access_token: await this.jwtService.signAsync(payload) };
+            }
+            else {
                 throw new common_1.UnauthorizedException();
             }
-            const payload = {
-                sub: account.account_id,
-                accountEmail: account.account_email,
-            };
-            return { access_token: await this.jwtService.signAsync(payload) };
         }
         else {
             throw new Error();

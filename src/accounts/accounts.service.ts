@@ -3,6 +3,7 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { PrismaService } from 'src/prisma.service';
 import { Prisma } from '@prisma/client';
+import { hashGivenPassword } from 'src/bcrypt/bcrypt.hashPassword';
 
 @Injectable()
 export class AccountsService {
@@ -10,14 +11,16 @@ export class AccountsService {
 
   async create(createAccountDto: CreateAccountDto) {
     try {
+      const encryptedPassword = await hashGivenPassword(
+        createAccountDto.accountPassword.trim().toLocaleLowerCase(),
+      );
+
       return await this.prisma.account.create({
         data: {
           account_email: createAccountDto.accountEmail
             .trim()
             .toLocaleLowerCase(),
-          account_password: createAccountDto.accountPassword
-            .trim()
-            .toLocaleLowerCase(),
+          account_password: encryptedPassword,
           account_name: createAccountDto.accountName.trim().toLocaleLowerCase(),
           account_establishment_id: createAccountDto.accountEstablishmentId,
           account_role_id: createAccountDto.accountRoleId,
@@ -62,15 +65,28 @@ export class AccountsService {
 
   async update(id: string, updateAccountDto: UpdateAccountDto) {
     try {
+      let encryptedPassword: string;
+
+      if (updateAccountDto.accountPassword) {
+        encryptedPassword = await hashGivenPassword(
+          updateAccountDto.accountPassword.trim().toLocaleLowerCase(),
+        );
+      }
       const data = {
-        account_email: updateAccountDto.accountEmail?.trim().toLocaleLowerCase(),
-        account_password: updateAccountDto.accountPassword?.trim().toLocaleLowerCase(),
+        account_email: updateAccountDto.accountEmail
+          ?.trim()
+          .toLocaleLowerCase(),
+        account_password:
+          encryptedPassword !== 'undefined'
+            ? encryptedPassword
+            : updateAccountDto.accountPassword?.trim().toLocaleLowerCase(),
         account_name: updateAccountDto.accountName?.trim().toLocaleLowerCase(),
         account_establishment_id: updateAccountDto.accountEstablishmentId,
         account_role_id: updateAccountDto.accountRoleId,
         account_trade_id: updateAccountDto.accountTradeId,
         account_hourly_rate: updateAccountDto.accountHourlyRate,
-        account_hourly_overtime_rate: updateAccountDto.accountHourlyOvertimeRate,
+        account_hourly_overtime_rate:
+          updateAccountDto.accountHourlyOvertimeRate,
       };
 
       if (!id.includes('@')) {

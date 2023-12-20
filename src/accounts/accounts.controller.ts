@@ -10,6 +10,7 @@ import {
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { hashGivenPassword } from 'src/bcrypt/bcrypt.hashPassword';
 
 @Controller('accounts')
 export class AccountsController {

@@ -13,20 +13,20 @@ exports.AccountsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
 const client_1 = require("@prisma/client");
+const bcrypt_hashPassword_1 = require("../bcrypt/bcrypt.hashPassword");
 let AccountsService = class AccountsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
     async create(createAccountDto) {
         try {
+            const encryptedPassword = await (0, bcrypt_hashPassword_1.hashGivenPassword)(createAccountDto.accountPassword.trim().toLocaleLowerCase());
             return await this.prisma.account.create({
                 data: {
                     account_email: createAccountDto.accountEmail
                         .trim()
                         .toLocaleLowerCase(),
-                    account_password: createAccountDto.accountPassword
-                        .trim()
-                        .toLocaleLowerCase(),
+                    account_password: encryptedPassword,
                     account_name: createAccountDto.accountName.trim().toLocaleLowerCase(),
                     account_establishment_id: createAccountDto.accountEstablishmentId,
                     account_role_id: createAccountDto.accountRoleId,
@@ -71,9 +71,17 @@ let AccountsService = class AccountsService {
     }
     async update(id, updateAccountDto) {
         try {
+            let encryptedPassword;
+            if (updateAccountDto.accountPassword) {
+                encryptedPassword = await (0, bcrypt_hashPassword_1.hashGivenPassword)(updateAccountDto.accountPassword.trim().toLocaleLowerCase());
+            }
             const data = {
-                account_email: updateAccountDto.accountEmail?.trim().toLocaleLowerCase(),
-                account_password: updateAccountDto.accountPassword?.trim().toLocaleLowerCase(),
+                account_email: updateAccountDto.accountEmail
+                    ?.trim()
+                    .toLocaleLowerCase(),
+                account_password: encryptedPassword !== 'undefined'
+                    ? encryptedPassword
+                    : updateAccountDto.accountPassword?.trim().toLocaleLowerCase(),
                 account_name: updateAccountDto.accountName?.trim().toLocaleLowerCase(),
                 account_establishment_id: updateAccountDto.accountEstablishmentId,
                 account_role_id: updateAccountDto.accountRoleId,
