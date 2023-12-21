@@ -24,6 +24,9 @@ let TimesheetsController = class TimesheetsController {
     create(createTimesheetDto) {
         return this.timesheetsService.create(createTimesheetDto);
     }
+    createAuto() {
+        return this.timesheetsService.createAutoTimesheet();
+    }
     findAll() {
         return this.timesheetsService.findAll();
     }
@@ -45,6 +48,12 @@ __decorate([
     __metadata("design:paramtypes", [create_timesheet_dto_1.CreateTimesheetDto]),
     __metadata("design:returntype", void 0)
 ], TimesheetsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('autoTimesheet'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], TimesheetsController.prototype, "createAuto", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

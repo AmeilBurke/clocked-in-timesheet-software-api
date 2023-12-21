@@ -20,6 +20,11 @@ export class TimesheetsController {
     return this.timesheetsService.create(createTimesheetDto);
   }
 
+  @Post('autoTimesheet')
+  createAuto() {
+    return this.timesheetsService.createAutoTimesheet();
+  }
+
   @Get()
   findAll() {
     return this.timesheetsService.findAll();

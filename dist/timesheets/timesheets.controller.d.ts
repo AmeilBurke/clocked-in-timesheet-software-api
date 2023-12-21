@@ -11,6 +11,7 @@ export declare class TimesheetsController {
         timesheet_start_date: Date;
         timesheet_end_date: Date;
     }>;
+    createAuto(): Promise<void>;
     findAll(): Promise<{
         timesheet_id: number;
         timesheet_name: string;

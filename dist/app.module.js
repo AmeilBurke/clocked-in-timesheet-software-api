@@ -17,12 +17,22 @@ const accounts_module_1 = require("./accounts/accounts.module");
 const jobs_module_1 = require("./jobs/jobs.module");
 const timesheets_module_1 = require("./timesheets/timesheets.module");
 const auth_module_1 = require("./auth/auth.module");
+const schedule_1 = require("@nestjs/schedule");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [trades_module_1.TradesModule, roles_module_1.RolesModule, establishments_module_1.EstablishmentsModule, accounts_module_1.AccountsModule, jobs_module_1.JobsModule, timesheets_module_1.TimesheetsModule, auth_module_1.AuthModule],
+        imports: [
+            trades_module_1.TradesModule,
+            roles_module_1.RolesModule,
+            establishments_module_1.EstablishmentsModule,
+            accounts_module_1.AccountsModule,
+            jobs_module_1.JobsModule,
+            timesheets_module_1.TimesheetsModule,
+            auth_module_1.AuthModule,
+            schedule_1.ScheduleModule.forRoot(),
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

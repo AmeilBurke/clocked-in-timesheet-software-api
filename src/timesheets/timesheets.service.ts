@@ -3,6 +3,7 @@ import { CreateTimesheetDto } from './dto/create-timesheet.dto';
 import { UpdateTimesheetDto } from './dto/update-timesheet.dto';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class TimesheetsService {
@@ -18,14 +19,45 @@ export class TimesheetsService {
           timesheet_end_date: createTimesheetDto.timesheetEndDate,
         },
       });
-
-      // this needs redone
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         return error.message;
       } else {
         return `there was an unknown error: ${error}.`;
       }
+    }
+  }
+
+  @Cron('0 0 * * *')
+  async createAutoTimesheet() {
+    try {
+      const allWorkerAccounts = this.prisma.account.findMany({
+        where: {
+          account_role_id: 1004,
+        },
+      });
+
+      const currentDate = new Date();
+      const dateInSevenDays = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate() + 7,
+      );
+
+      (await allWorkerAccounts).forEach(async (workerAccount) => {
+        await this.prisma.timesheet.create({
+          data: {
+            timesheet_name: `timesheet - ${
+              workerAccount.account_name
+            } -  ending ${dateInSevenDays.getDate()}/${dateInSevenDays.getMonth()}/${dateInSevenDays.getFullYear()}`,
+            timesheet_start_date: currentDate,
+            timesheet_end_date: dateInSevenDays,
+            timesheet_account_id: workerAccount.account_id,
+          },
+        });
+      });
+    } catch (error) {
+      console.log(`error creating timesheet: ${error}`);
     }
   }
 

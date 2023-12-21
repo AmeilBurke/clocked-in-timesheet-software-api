@@ -21,6 +21,7 @@ let AuthService = class AuthService {
     }
     async signIn(email, password) {
         const account = await this.accountsService.findOne(email);
+        console.log(account);
         if (typeof account !== 'string') {
             if (await bcrypt.compare(password, account.account_password)) {
                 const payload = {

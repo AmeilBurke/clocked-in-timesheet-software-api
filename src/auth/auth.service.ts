@@ -12,9 +12,9 @@ export class AuthService {
 
   async signIn(email: string, password: string) {
     const account = await this.accountsService.findOne(email);
+    console.log(account);
 
     if (typeof account !== 'string') {
-
       if (await bcrypt.compare(password, account.account_password)) {
         const payload = {
           sub: account.account_id,

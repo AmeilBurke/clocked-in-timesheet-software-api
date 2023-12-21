@@ -1,0 +1,9 @@
+{
+    "account_email": "plumber01@gmail.com",
+    "account_password": "$2b$10$DDyBxEqic7W4hLlAur5biO54NGfW8atx9NOadTQTkyUt16dk2vH56",
+    "account_name": "jeff walker",
+    "account_role_id": 1004,
+    "account_trade_id": 2005,
+    "account_hourly_rate": 30.00,
+    "account_hourly_overtime_rate": 45.00
+}

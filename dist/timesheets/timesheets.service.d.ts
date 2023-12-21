@@ -12,6 +12,7 @@ export declare class TimesheetsService {
         timesheet_start_date: Date;
         timesheet_end_date: Date;
     }>;
+    createAutoTimesheet(): Promise<void>;
     findAll(): Promise<{
         timesheet_id: number;
         timesheet_name: string;

@@ -11,11 +11,13 @@ import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { hashGivenPassword } from 'src/bcrypt/bcrypt.hashPassword';
+import { Public } from 'src/auth/auth.decorator';
 
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
+  @Public()
   @Post()
   create(@Body() createAccountDto: CreateAccountDto) {
     return this.accountsService.create(createAccountDto);

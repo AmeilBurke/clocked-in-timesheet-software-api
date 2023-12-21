@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const accounts_service_1 = require("./accounts.service");
 const create_account_dto_1 = require("./dto/create-account.dto");
 const update_account_dto_1 = require("./dto/update-account.dto");
+const auth_decorator_1 = require("../auth/auth.decorator");
 let AccountsController = class AccountsController {
     constructor(accountsService) {
         this.accountsService = accountsService;
@@ -39,6 +40,7 @@ let AccountsController = class AccountsController {
 };
 exports.AccountsController = AccountsController;
 __decorate([
+    (0, auth_decorator_1.Public)(),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

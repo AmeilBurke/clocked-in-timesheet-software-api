@@ -13,6 +13,7 @@ exports.TimesheetsService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../prisma.service");
+const schedule_1 = require("@nestjs/schedule");
 let TimesheetsService = class TimesheetsService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -35,6 +36,30 @@ let TimesheetsService = class TimesheetsService {
             else {
                 return `there was an unknown error: ${error}.`;
             }
+        }
+    }
+    async createAutoTimesheet() {
+        try {
+            const allWorkerAccounts = this.prisma.account.findMany({
+                where: {
+                    account_role_id: 1004,
+                },
+            });
+            const currentDate = new Date();
+            const dateInSevenDays = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 7);
+            (await allWorkerAccounts).forEach(async (workerAccount) => {
+                await this.prisma.timesheet.create({
+                    data: {
+                        timesheet_name: `timesheet - ${workerAccount.account_name} -  ending ${dateInSevenDays.getDate()}/${dateInSevenDays.getMonth()}/${dateInSevenDays.getFullYear()}`,
+                        timesheet_start_date: currentDate,
+                        timesheet_end_date: dateInSevenDays,
+                        timesheet_account_id: workerAccount.account_id,
+                    },
+                });
+            });
+        }
+        catch (error) {
+            console.log(`error creating timesheet: ${error}`);
         }
     }
     async findAll() {
@@ -106,6 +131,12 @@ let TimesheetsService = class TimesheetsService {
     }
 };
 exports.TimesheetsService = TimesheetsService;
+__decorate([
+    (0, schedule_1.Cron)('0 0 * * *'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], TimesheetsService.prototype, "createAutoTimesheet", null);
 exports.TimesheetsService = TimesheetsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
